@@ -1,0 +1,39 @@
+name: Build FrameScript macOS DMG
+
+on:
+  push:
+    paths:
+      - "project1/**"
+      - ".github/workflows/build-macos.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Test and package universal DMG
+    runs-on: macos-15
+    timeout-minutes: 45
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Show Apple toolchain
+        run: |
+          xcodebuild -version
+          swift --version
+
+      - name: Run core codec tests
+        run: swift test --package-path project1
+
+      - name: Build and verify DMG
+        run: bash project1/scripts/make-dmg.sh
+
+      - name: Upload installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: FrameScript-macOS-DMG
+          path: project1/build/FrameScript-macOS.dmg
+          if-no-files-found: error
+          retention-days: 30
