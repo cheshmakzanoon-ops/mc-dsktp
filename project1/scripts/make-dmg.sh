@@ -14,8 +14,8 @@ mkdir -p "$BUILD_DIR" "$APP_DIR/Contents/MacOS" "$APP_DIR/Contents/Resources"
 swift build --package-path "$PROJECT_DIR" --build-path "$ARM_BUILD" --configuration release --triple arm64-apple-macosx13.0
 swift build --package-path "$PROJECT_DIR" --build-path "$INTEL_BUILD" --configuration release --triple x86_64-apple-macosx13.0
 
-ARM_BINARY="$(find "$ARM_BUILD" -type f -name FrameScript -print -quit)"
-INTEL_BINARY="$(find "$INTEL_BUILD" -type f -name FrameScript -print -quit)"
+ARM_BINARY="$ARM_BUILD/arm64-apple-macosx/release/FrameScript"
+INTEL_BINARY="$INTEL_BUILD/x86_64-apple-macosx/release/FrameScript"
 if [ -z "$ARM_BINARY" ] || [ ! -x "$ARM_BINARY" ]; then
   echo "Could not find the executable Apple Silicon build under $ARM_BUILD." >&2
   find "$ARM_BUILD" -maxdepth 7 -type f -print >&2
