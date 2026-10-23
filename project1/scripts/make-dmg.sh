@@ -14,10 +14,20 @@ mkdir -p "$BUILD_DIR" "$APP_DIR/Contents/MacOS" "$APP_DIR/Contents/Resources"
 swift build --package-path "$PROJECT_DIR" --build-path "$ARM_BUILD" --configuration release --triple arm64-apple-macosx13.0
 swift build --package-path "$PROJECT_DIR" --build-path "$INTEL_BUILD" --configuration release --triple x86_64-apple-macosx13.0
 
-ARM_BINARY="$(find "$ARM_BUILD" -type f -name FrameScript -path '*/release/*' -print -quit)"
-INTEL_BINARY="$(find "$INTEL_BUILD" -type f -name FrameScript -path '*/release/*' -print -quit)"
-test -n "$ARM_BINARY" && test -x "$ARM_BINARY"
-test -n "$INTEL_BINARY" && test -x "$INTEL_BINARY"
+ARM_BINARY="$(find "$ARM_BUILD" -type f -name FrameScript -print -quit)"
+INTEL_BINARY="$(find "$INTEL_BUILD" -type f -name FrameScript -print -quit)"
+if [ -z "$ARM_BINARY" ] || [ ! -x "$ARM_BINARY" ]; then
+  echo "Could not find the executable Apple Silicon build under $ARM_BUILD." >&2
+  find "$ARM_BUILD" -maxdepth 7 -type f -print >&2
+  exit 1
+fi
+if [ -z "$INTEL_BINARY" ] || [ ! -x "$INTEL_BINARY" ]; then
+  echo "Could not find the executable Intel build under $INTEL_BUILD." >&2
+  find "$INTEL_BUILD" -maxdepth 7 -type f -print >&2
+  exit 1
+fi
+echo "Apple Silicon binary: $ARM_BINARY"
+echo "Intel binary: $INTEL_BINARY"
 
 lipo -create "$ARM_BINARY" "$INTEL_BINARY" -output "$APP_DIR/Contents/MacOS/FrameScript"
 cp "$PROJECT_DIR/Resources/Info.plist" "$APP_DIR/Contents/Info.plist"
