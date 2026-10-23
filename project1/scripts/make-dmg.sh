@@ -33,7 +33,7 @@ lipo -create "$ARM_BINARY" "$INTEL_BINARY" -output "$APP_DIR/Contents/MacOS/Fram
 cp "$PROJECT_DIR/Resources/Info.plist" "$APP_DIR/Contents/Info.plist"
 codesign --force --deep --sign - "$APP_DIR"
 codesign --verify --deep --strict "$APP_DIR"
-lipo -verify_arch arm64 x86_64 "$APP_DIR/Contents/MacOS/FrameScript"
+lipo "$APP_DIR/Contents/MacOS/FrameScript" -verify_arch arm64 x86_64
 
 hdiutil create \
   -volname "FrameScript" \
