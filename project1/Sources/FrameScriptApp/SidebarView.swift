@@ -3,7 +3,6 @@ import FrameScriptCore
 
 struct SidebarView: View {
     @ObservedObject var store: EditorStore
-    @State private var activeSection: SidebarSection = .scenes
 
     var body: some View {
         VStack(spacing: 0) {
@@ -37,7 +36,7 @@ struct SidebarView: View {
             .padding(.horizontal, 15)
             .padding(.bottom, 12)
 
-            if activeSection == .scenes {
+            if store.activeSection == .scenes {
                 scenesList
             } else {
                 charactersList
@@ -170,9 +169,9 @@ struct SidebarView: View {
         .padding(.bottom, 15)
     }
 
-    private func sectionButton(_ section: SidebarSection, icon: String) -> some View {
+    private func sectionButton(_ section: NavigatorSection, icon: String) -> some View {
         Button {
-            activeSection = section
+            store.activeSection = section
         } label: {
             HStack(spacing: 6) {
                 Image(systemName: icon)
@@ -180,10 +179,10 @@ struct SidebarView: View {
                 Text(section.title)
                     .font(.system(size: 10, weight: .semibold))
             }
-            .foregroundStyle(activeSection == section ? Color(hex: 0x294A53) : Color(hex: 0x74838D))
+            .foregroundStyle(store.activeSection == section ? Color(hex: 0x294A53) : Color(hex: 0x74838D))
             .frame(maxWidth: .infinity)
             .frame(height: 27)
-            .background(activeSection == section ? Color.white : Color.clear, in: RoundedRectangle(cornerRadius: 7))
+            .background(store.activeSection == section ? Color.white : Color.clear, in: RoundedRectangle(cornerRadius: 7))
         }
         .buttonStyle(.plain)
     }
@@ -203,17 +202,5 @@ struct SidebarView: View {
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 30)
-    }
-}
-
-private enum SidebarSection {
-    case scenes
-    case characters
-
-    var title: String {
-        switch self {
-        case .scenes: "Scenes"
-        case .characters: "Cast"
-        }
     }
 }

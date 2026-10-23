@@ -30,10 +30,21 @@ jobs:
       - name: Build and verify DMG
         run: bash project1/scripts/make-dmg.sh
 
+      - name: Capture app screenshots
+        run: bash project1/scripts/capture-screenshots.sh
+
       - name: Upload installer
         uses: actions/upload-artifact@v4
         with:
           name: FrameScript-macOS-DMG
           path: project1/build/FrameScript-macOS.dmg
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Upload app screenshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: FrameScript-10-Screenshots
+          path: project1/build/screenshots/FrameScript-*.png
           if-no-files-found: error
           retention-days: 30

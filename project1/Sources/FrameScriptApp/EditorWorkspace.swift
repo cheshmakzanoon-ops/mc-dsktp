@@ -40,6 +40,12 @@ struct EditorWorkspace: View {
                     proxy.scrollTo(id, anchor: .center)
                 }
             }
+            .onAppear {
+                guard let id = store.selectedID else { return }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    proxy.scrollTo(id, anchor: .center)
+                }
+            }
         }
     }
 

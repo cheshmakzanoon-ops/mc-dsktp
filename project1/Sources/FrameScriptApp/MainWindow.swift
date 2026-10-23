@@ -1,3 +1,4 @@
+import AppKit
 import SwiftUI
 import FrameScriptCore
 
@@ -19,6 +20,11 @@ struct MainWindow: View {
             StatusBar(store: store)
         }
         .background(Color(hex: 0xEEF1F5))
+        .onAppear {
+            if ProcessInfo.processInfo.environment["FRAMESCRIPT_SCREENSHOT_MODE"] != nil {
+                NSApp.activate(ignoringOtherApps: true)
+            }
+        }
         .alert("FrameScript", isPresented: Binding(
             get: { store.alertMessage != nil },
             set: { if !$0 { store.alertMessage = nil } }
