@@ -11,6 +11,11 @@ if [ ! -x "$APP_BINARY" ]; then
 fi
 
 mkdir -p "$SCREENSHOT_DIR"
+defaults write com.apple.dock autohide -bool true
+defaults write com.apple.dock autohide-delay -float 1000
+killall Dock 2>/dev/null || true
+sleep 2
+
 for mode in $(seq 1 10); do
   screenshot=$(printf '%s/FrameScript-%02d.png' "$SCREENSHOT_DIR" "$mode")
   FRAMESCRIPT_SCREENSHOT_MODE="$mode" "$APP_BINARY" >/dev/null 2>&1 &
