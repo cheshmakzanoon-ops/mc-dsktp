@@ -85,12 +85,12 @@ public enum ScriptElementType: String, CaseIterable, Codable, Sendable {
     public func nextAfterReturn(isEmpty: Bool) -> ScriptElementType {
         if isEmpty, self == .action { return .sceneHeading }
         switch self {
-        case .sceneHeading: .action
-        case .action, .shot: .action
-        case .character: .dialogue
-        case .dialogue: .character
-        case .parenthetical: .dialogue
-        case .transition: .sceneHeading
+        case .sceneHeading: return .action
+        case .action, .shot: return .action
+        case .character: return .dialogue
+        case .dialogue: return .character
+        case .parenthetical: return .dialogue
+        case .transition: return .sceneHeading
         }
     }
 }
