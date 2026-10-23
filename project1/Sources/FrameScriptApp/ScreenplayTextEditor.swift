@@ -1,5 +1,6 @@
 import AppKit
 import SwiftUI
+import FrameScriptCore
 
 struct ScreenplayTextEditor: NSViewRepresentable {
     @Binding var text: String
@@ -30,7 +31,7 @@ struct ScreenplayTextEditor: NSViewRepresentable {
         view.onTab = onTab
         view.onDeleteEmpty = onDeleteEmpty
         view.onFocus = onFocus
-        view.textAlignment = type == .transition ? .right : .left
+        view.alignment = type == .transition ? .right : .left
         view.string = text
         return view
     }
@@ -41,7 +42,7 @@ struct ScreenplayTextEditor: NSViewRepresentable {
         view.onTab = onTab
         view.onDeleteEmpty = onDeleteEmpty
         view.onFocus = onFocus
-        view.textAlignment = type == .transition ? .right : .left
+        view.alignment = type == .transition ? .right : .left
         if view.string != text {
             let oldSelection = view.selectedRange()
             view.string = text
