@@ -7,7 +7,7 @@ enum PDFExporter {
 
     static func write(snapshot: ScreenplaySnapshot, to url: URL) throws {
         var mediaBox = CGRect(origin: .zero, size: paperSize)
-        guard let context = CGContext(url: url as CFURL, mediaBox: &mediaBox, nil) else {
+        guard let context = CGContext(url as CFURL, mediaBox: &mediaBox, nil) else {
             throw CocoaError(.fileWriteUnknown)
         }
 
